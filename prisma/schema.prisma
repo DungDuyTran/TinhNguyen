@@ -1,0 +1,184 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum VaiTro {
+  TinhNguyenVien
+  ToChuc
+  Admin
+}
+
+enum TrangThaiSuKien {
+  choDuyet
+  chapNhan
+  tuChoi
+  daThamGia
+  vangMat
+}
+
+enum TrangThaiDangKy {
+  choDuyet
+  chapNhan
+  tuChoi
+  daThamGia
+  vangMat
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  firebaseUid  String   @unique
+  hoTen        String
+  email        String?  @unique
+  sdt          String?  @unique
+  ngaySinh     DateTime?
+  diaChi       String?
+  vaiTro       VaiTro
+  ngayTao      DateTime @default(now())
+  ngayCapNhat  DateTime @updatedAt
+
+  // Quan hệ 1-1
+  TinhNguyenVien TinhNguyenVien?
+  ToChuc         ToChuc?
+
+  // Quan hệ khác
+  thongBao     ThongBao[]
+  tinNhanGui   TinNhan[] @relation("NguoiGui")
+  tinNhanNhan  TinNhan[] @relation("NguoiNhan")
+}
+
+model TinhNguyenVien {
+  id               Int    @id @default(autoincrement())
+  kyNang           String?
+  soThich          String?
+  thoiGianTanh     String?
+  tongBuoiDongGop  Int    @default(0)
+
+  User   User @relation(fields: [UserId], references: [id])
+  UserId Int  @unique   // đảm bảo 1-1
+
+  // Quan hệ
+  ChungNhan_TinhNguyenVien ChungNhan_TinhNguyenVien[]
+  dangKy                   DangKy[]
+  danhGia                  DanhGia[]
+}
+
+model ToChuc {
+  id            Int    @id @default(autoincrement())
+  tenToChuc     String
+  moTa          String?
+  website       String?
+  nguoiDaiDien  String?
+
+  User   User @relation(fields: [UserId], references: [id])
+  UserId Int  @unique   // đảm bảo 1-1
+
+  // Quan hệ
+  ToChuc_SuKien ToChuc_SuKien[]
+  danhGia       DanhGia[]
+}
+
+model ChungNhan {
+  id        Int      @id @default(autoincrement())
+  ngayCap   DateTime @default(now())
+  fileChungNhan String?
+  moTa      String?
+
+  // Quan hệ
+  ChungNhan_TinhNguyenVien ChungNhan_TinhNguyenVien[]
+}
+
+model ChungNhan_TinhNguyenVien {
+  ChungNhanId       Int
+  TinhNguyenVienId  Int
+
+  ChungNhan       ChungNhan       @relation(fields: [ChungNhanId], references: [id])
+  TinhNguyenVien  TinhNguyenVien  @relation(fields: [TinhNguyenVienId], references: [id])
+
+  @@id([ChungNhanId, TinhNguyenVienId])
+}
+
+model SuKien {
+  id             Int      @id @default(autoincrement())
+  tieuDe         String
+  moTa           String?
+  diaDiem        String?
+  ngayBatDau     DateTime
+  ngayKetThuc    DateTime
+  soLuongToiDa   Int
+  soLuongToiThieu Int
+
+  // Quan hệ
+  ToChuc_SuKien ToChuc_SuKien[]
+  dangKy        DangKy[]
+  danhGia       DanhGia[]
+}
+
+model ToChuc_SuKien {
+  ToChucId Int
+  SuKienId Int
+
+  ToChuc ToChuc @relation(fields: [ToChucId], references: [id])
+  SuKien SuKien @relation(fields: [SuKienId], references: [id])
+
+  @@id([ToChucId, SuKienId])
+}
+
+model DangKy {
+  id              Int              @id @default(autoincrement())
+  trangThai       TrangThaiDangKy  @default(choDuyet)
+  ngayDangKy      DateTime         @default(now())
+  ngayXacNhan     DateTime?
+
+  suKienId        Int
+  tinhNguyenVienId Int
+
+  suKien          SuKien           @relation(fields: [suKienId], references: [id])
+  tinhNguyenVien  TinhNguyenVien   @relation(fields: [tinhNguyenVienId], references: [id])
+}
+
+model DanhGia {
+  id              Int      @id @default(autoincrement())
+  soSao           Int
+  nhanXet         String?
+  ngayTao         DateTime @default(now())
+
+  suKienId        Int
+  tinhNguyenVienId Int
+  toChucId        Int
+
+  suKien          SuKien           @relation(fields: [suKienId], references: [id])
+  tinhNguyenVien  TinhNguyenVien   @relation(fields: [tinhNguyenVienId], references: [id])
+  toChuc          ToChuc           @relation(fields: [toChucId], references: [id])
+}
+
+model ThongBao {
+  id          Int      @id @default(autoincrement())
+  tieuDe      String?
+  noiDung     String?
+  daDoc       Boolean  @default(false)
+  ngayTao     DateTime @default(now())
+
+  nguoiDungId Int
+  nguoiDung   User @relation(fields: [nguoiDungId], references: [id])
+}
+
+model TinNhan {
+  id           Int      @id @default(autoincrement())
+  nguoiGuiId   Int
+  nguoiNhanId  Int
+  noiDung      String
+  ngayGui      DateTime @default(now())
+
+  nguoiGui   User @relation("NguoiGui", fields: [nguoiGuiId], references: [id])
+  nguoiNhan  User @relation("NguoiNhan", fields: [nguoiNhanId], references: [id])
+}
