@@ -57,14 +57,16 @@ model User {
 }
 
 model TinhNguyenVien {
-  id               Int    @id @default(autoincrement())
+  id      Int   @id
+  User    User  @relation(fields: [id], references: [id])
+
   kyNang           String?
   soThich          String?
   thoiGianTanh     String?
   tongBuoiDongGop  Int    @default(0)
 
-  User   User @relation(fields: [UserId], references: [id])
-  UserId Int  @unique   // đảm bảo 1-1
+  // User   User @relation(fields: [UserId], references: [id])
+  // UserId Int  @unique   // đảm bảo 1-1
 
   // Quan hệ
   ChungNhan_TinhNguyenVien ChungNhan_TinhNguyenVien[]
@@ -73,14 +75,16 @@ model TinhNguyenVien {
 }
 
 model ToChuc {
-  id            Int    @id @default(autoincrement())
+  // id            Int    @id @default(autoincrement())
+  id      Int   @id
+  User    User  @relation(fields: [id], references: [id])
   tenToChuc     String
-  moTa          String?
+  moTa          String? @db.Text
   website       String?
   nguoiDaiDien  String?
 
-  User   User @relation(fields: [UserId], references: [id])
-  UserId Int  @unique   // đảm bảo 1-1
+  // User   User @relation(fields: [UserId], references: [id])
+  // UserId Int  @unique   // đảm bảo 1-1
 
   // Quan hệ
   ToChuc_SuKien ToChuc_SuKien[]
@@ -91,7 +95,7 @@ model ChungNhan {
   id        Int      @id @default(autoincrement())
   ngayCap   DateTime @default(now())
   fileChungNhan String?
-  moTa      String?
+  moTa      String? @db.Text
 
   // Quan hệ
   ChungNhan_TinhNguyenVien ChungNhan_TinhNguyenVien[]
@@ -110,7 +114,7 @@ model ChungNhan_TinhNguyenVien {
 model SuKien {
   id             Int      @id @default(autoincrement())
   tieuDe         String
-  moTa           String?
+  moTa           String? @db.Text
   diaDiem        String?
   ngayBatDau     DateTime
   ngayKetThuc    DateTime
@@ -149,7 +153,7 @@ model DangKy {
 model DanhGia {
   id              Int      @id @default(autoincrement())
   soSao           Int
-  nhanXet         String?
+  nhanXet         String? @db.Text
   ngayTao         DateTime @default(now())
 
   suKienId        Int
@@ -164,7 +168,7 @@ model DanhGia {
 model ThongBao {
   id          Int      @id @default(autoincrement())
   tieuDe      String?
-  noiDung     String?
+  noiDung     String? @db.Text
   daDoc       Boolean  @default(false)
   ngayTao     DateTime @default(now())
 
@@ -176,7 +180,7 @@ model TinNhan {
   id           Int      @id @default(autoincrement())
   nguoiGuiId   Int
   nguoiNhanId  Int
-  noiDung      String
+  noiDung      String @db.Text
   ngayGui      DateTime @default(now())
 
   nguoiGui   User @relation("NguoiGui", fields: [nguoiGuiId], references: [id])

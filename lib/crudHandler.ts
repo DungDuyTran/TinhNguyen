@@ -27,9 +27,12 @@ export class CrudHandler<T extends z.ZodTypeAny> {
       return NextResponse.json({ error }, { status: 400 });
     }
   }
-  async getId(include: object = {}) {
+  async getId(id: number, include: object = {}) {
     try {
-      const data = await this.model.findUnique({ where: { id } });
+      const data = await this.model.findUnique({
+        where: { id },
+        include,
+      });
       if (!data) {
         return NextResponse.json(
           { message: "Không có id này" },
@@ -42,7 +45,7 @@ export class CrudHandler<T extends z.ZodTypeAny> {
     }
   }
   async post(body: unknown) {
-    const Data = this.schema.safeParse(body);
+    const Data = await this.schema.safeParse(body);
     if (!Data.success) {
       return NextResponse.json({ error: Data.error }, { status: 400 });
     }
@@ -54,7 +57,7 @@ export class CrudHandler<T extends z.ZodTypeAny> {
     }
   }
   async update(id: number, body: unknown) {
-    const Data = await this.model.safeParse(body);
+    const Data = await this.schema.safeParse(body);
     if (!Data.success) {
       return NextResponse.json({ error }, { status: 400 });
     }
@@ -73,7 +76,7 @@ export class CrudHandler<T extends z.ZodTypeAny> {
   }
   async deleted(id: number) {
     try {
-      const data = this.model.delete({ where: { id } });
+      const data = await this.model.delete({ where: { id } });
       return NextResponse.json({ message: "Xóa thành công" }, { status: 201 });
     } catch (error) {
       return NextResponse.json({ error }, { status: 400 });
