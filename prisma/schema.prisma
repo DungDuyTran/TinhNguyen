@@ -98,6 +98,8 @@ model ChungNhan {
   moTa      String? @db.Text
 
   // Quan hệ
+  SuKien SuKien @relation(fields: [SuKienId], references: [id])
+  SuKienId Int
   ChungNhan_TinhNguyenVien ChungNhan_TinhNguyenVien[]
 }
 
@@ -125,6 +127,7 @@ model SuKien {
   ToChuc_SuKien ToChuc_SuKien[]
   dangKy        DangKy[]
   danhGia       DanhGia[]
+  chungNhans     ChungNhan[]
 }
 
 model ToChuc_SuKien {

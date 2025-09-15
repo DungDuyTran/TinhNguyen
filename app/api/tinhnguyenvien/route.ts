@@ -1,7 +1,7 @@
 import { CrudHandler } from "@/lib/crudHandler";
 import { prisma } from "@/lib/prisma";
 import { NextRequest } from "next/server";
-import z from "zod";
+import z, { includes } from "zod";
 
 const TinhNguyenVienShema = z.object({
   id: z.number().int().positive(),
@@ -14,7 +14,7 @@ const TinhNguyenVienShema = z.object({
 const handler = new CrudHandler(prisma.tinhNguyenVien, TinhNguyenVienShema);
 
 export async function GET() {
-  return handler.getAll();
+  return handler.getAll({ User: true });
 }
 
 export async function POST(req: NextRequest) {
