@@ -1,6 +1,9 @@
 import axios from "axios";
 import { AxiosRequestConfig } from "axios";
 
+// fetcher<T> → dùng với SWR (chỉ GET).
+// request<T> → dùng cho mọi method (GET, POST, PUT, DELETE).
+
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   headers: {
