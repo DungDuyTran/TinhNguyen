@@ -7,6 +7,7 @@ export class BaseController<TService> {
   constructor(service: TService) {
     this.service = service;
   }
+
   protected handleError(error: any) {
     return (
       NextResponse.json({ error: error.message || "Server error" }),
@@ -14,3 +15,5 @@ export class BaseController<TService> {
     );
   }
 }
+
+// kiến trúc tổ chức lưu trữ

@@ -1,2 +1,11 @@
-import axios from "axios";
-import { AxiosRequestConfig } from "axios";
+/// generic
+
+// layer ( controller -- service --- repository)
+
+// extend
+
+// Decoration --- Annotation
+
+// @controller
+
+// APO
