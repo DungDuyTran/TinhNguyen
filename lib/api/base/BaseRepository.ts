@@ -18,7 +18,7 @@ export class BaseRepository<TModel> {
     return this.model.findUnique({ where: { id }, include });
   }
   async create(data: TModel) {
-    return this.model.creat({ data });
+    return this.model.create({ data });
   }
   async update(id: number, data: Partial<TModel>) {
     return this.model.update({ where: { id }, data });

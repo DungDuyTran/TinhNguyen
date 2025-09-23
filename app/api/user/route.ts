@@ -1,4 +1,4 @@
-import { UserController } from "@/features/user/controller";
+import { UserController } from "@/lib/api/controllers/UserController";
 
 const Controller = new UserController();
 
