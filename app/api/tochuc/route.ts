@@ -2,16 +2,7 @@ import { CrudHandler } from "@/lib/crudHandler";
 import { prisma } from "@/lib/prisma";
 import { NextRequest } from "next/server";
 import z from "zod";
-
-const ToChucSchema = z.object({
-  id: z.number().int(),
-  tenToChuc: z.string(),
-  moTa: z.string(),
-  website: z.string(),
-  nguoiDaiDien: z.string(),
-});
-
-const handler = new CrudHandler(prisma.toChuc, ToChucSchema);
+// redis
 
 export async function GET() {
   return handler.getAll({ User: true });

@@ -1,36 +1,25 @@
-import { CrudHandler } from "@/lib/crudHandler";
-import { prisma } from "@/lib/prisma";
 import { NextRequest } from "next/server";
-import z, { number } from "zod";
+import { UserController } from "@/lib/api/controllers/UserController";
 
-const ToChucSchema = z.object({
-  id: z.number().int(),
-  tenToChuc: z.string(),
-  moTa: z.string(),
-  website: z.string(),
-  nguoiDaiDien: z.string(),
-});
-
-const handler = new CrudHandler(prisma.toChuc, ToChucSchema);
+const controller = new UserController();
 
 export async function GET(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  return handler.getId(Number(params.id), { User: true });
+  return controller.getById(Number(params.id));
 }
 
 export async function PUT(
-  res: NextRequest,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const data = await res.json();
-  return handler.update(Number(params.id), data);
+  return controller.update(Number(params.id), req);
 }
 
 export async function DELETE(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  return handler.deleted(Number(params.id));
+  return controller.delete(Number(params.id));
 }

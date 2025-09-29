@@ -1,10 +1,7 @@
 // public → có thể truy cập ở mọi nơi (bên trong class, bên ngoài class, subclass).
-
-import { number } from "zod";
-
 // private → chỉ có thể truy cập bên trong class hiện tại.
-
-// protected → có thể truy cập trong class hiện tại và các class con (kế thừa), nhưng không thể truy cập trực tiếp từ bên ngoài.
+// protected → có thể truy cập trong class hiện tại và các class con (kế thừa),
+// nhưng không thể truy cập trực tiếp từ bên ngoài.
 
 export class BaseRepository<TModel> {
   protected model: any;
