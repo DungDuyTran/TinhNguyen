@@ -42,6 +42,7 @@ model User {
   sdt          String?  @unique
   ngaySinh     DateTime?
   diaChi       String?
+   password     String? 
   vaiTro       VaiTro
   ngayTao      DateTime @default(now())
   ngayCapNhat  DateTime @updatedAt

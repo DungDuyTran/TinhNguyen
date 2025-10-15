@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 export class BaseController<TModel> {
   protected service: any;
-
   constructor(service: any) {
     this.service = service;
   }
