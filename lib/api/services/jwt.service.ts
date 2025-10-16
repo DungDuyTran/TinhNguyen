@@ -1,5 +1,5 @@
 import jwt, { Secret, SignOptions } from "jsonwebtoken";
-
+// tạo access token, refresh token, verifyToken
 const JWT_SECRET = process.env.JWT_SECRET as Secret;
 const ACCESS_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "1h";
 const REFRESH_EXPIRES_IN = process.env.REFRESH_TOKEN_EXPIRES_IN || "7d";

@@ -1,3 +1,6 @@
+// lớp giao tiếp với db
+// Tạo findByEmail -- createUsser() có hash mật khẩu -- verifiPw
+
 import { prisma } from "@/lib/prisma";
 import { Prisma, VaiTro } from "@prisma/client";
 import bcrypt from "bcryptjs";
