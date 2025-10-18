@@ -3,10 +3,10 @@ import { jwtService } from "@/lib/api/services/jwt.service";
 import { setCsrfCookie } from "@/lib/csrf";
 import { NextRequest, NextResponse } from "next/server";
 
-// kiểm tra email/pw. cấp access_Token và refresh_token
+// kiểm tra email/p cấp access_Token và refresh_token
 export async function POST(req: NextRequest) {
   try {
-    const { email, password, hoTen } = await req.json();
+    const { email, password } = await req.json();
     const user = await userRepository.findByEmail(email);
     if (!user?.password) {
       return NextResponse.json(

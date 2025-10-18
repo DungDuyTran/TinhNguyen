@@ -13,7 +13,7 @@ export async function GET() {
   const cookieStore = await cookies();
 
   cookieStore.set("csrf_token", token, {
-    httpOnly: false, // tránh XSS
+    httpOnly: true, // tránh XSS
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict", // chống CSRF từ domain khác
     path: "/",

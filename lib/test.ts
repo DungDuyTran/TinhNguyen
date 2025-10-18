@@ -1,11 +1,21 @@
-/// generic
+import { hex } from "zod";
+import crypto from "crypto";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
-// layer ( controller -- service --- repository)
+function createCSRFToken() {
+  return crypto.randomBytes(32).toString("hex");
+}
 
-// extend
+export async function GET() {
+  const token = createCSRFToken();
+  const cookieStore = await cookies();
 
-// Decoration --- Annotation
-
-// @controller
-
-// APO
+  cookieStore.set("csrf_token", token, {
+    httpOnly: true,
+    sameSite: true,
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+  });
+  return NextResponse.json({ csrfToken: token });
+}

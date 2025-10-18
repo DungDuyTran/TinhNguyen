@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
-import Cookies from "js-cookie"; // KHÔNG dùng trong server (chỉ client)
 import { verifyCsrfToken } from "../csrf";
 
 // middleware để bảo vệ route
@@ -24,8 +23,10 @@ export async function authMiddleware(req: NextRequest) {
   }
 
   // Kiểm tra CSRF token cho các request ghi (POST/PUT/PATCH/DELETE)
+  // toUpperCase:  Đây là hàm của kiểu chuỗi (string) trong JavaScript dùng để chuyển toàn bộ ký tự sang chữ in hoa.
   const method = req.method.toUpperCase();
   if (["POST", "PUT", "PATCH", "DELETE"].includes(method)) {
+    // "x-csrf-token" nghĩa là: “Token chống CSRF mà client gửi kèm header”.
     const csrfHeader = req.headers.get("x-csrf-token");
     const csrfCookie = req.cookies.get("csrf_token")?.value;
 
