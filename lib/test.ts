@@ -13,7 +13,7 @@ export async function GET() {
 
   cookieStore.set("csrf_token", token, {
     httpOnly: true,
-    sameSite: true,
+    sameSite: "strict",
     secure: process.env.NODE_ENV === "production",
     path: "/",
   });

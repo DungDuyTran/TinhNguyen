@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
   const { email, password, hoTen } = await req.json();
   const existing = await userRepository.findByEmail(email);
   if (existing) {
-    return NextResponse.json({ error: "email đã tông tài" }, { status: 400 });
+    return NextResponse.json({ error: "email đã tồn tại" }, { status: 400 });
   }
   const newUser = await userRepository.createUser({
     email,
