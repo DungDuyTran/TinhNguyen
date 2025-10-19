@@ -34,12 +34,14 @@ export async function POST(req: NextRequest) {
       httpOnly: true,
       secure: true,
       sameSite: "strict",
+      maxAge: 60 * 7,
       path: "/",
     });
     res.cookies.set("refresh_token", refeshToKen, {
       httpOnly: true,
       secure: true,
       sameSite: "strict",
+      maxAge: 60 * 60 * 24 * 7,
       path: "/",
     });
     // httpOnly: true --> js không thế đọc cookie -> chống xss

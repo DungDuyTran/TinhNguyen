@@ -23,22 +23,17 @@ export default function SignupPage() {
     e.preventDefault();
 
     if (!formData.hoTen || !formData.email || !formData.password) {
-      setError("⚠️ Vui lòng nhập đầy đủ thông tin");
+      setError("Vui lòng nhập đầy đủ thông tin");
       return;
     }
 
     setLoading(true);
     try {
-      const res = await request("POST", "/api/user", formData);
+      const res = await request("POST", "/api/auth/register", formData);
       alert(res.message || "Đăng ký thành công!");
       router.push("/auth/login");
     } catch (err: any) {
-      console.error("Signup error:", err);
-      const msg =
-        err?.response?.data?.error ||
-        err?.message ||
-        "❌ Đăng ký thất bại. Vui lòng thử lại.";
-      setError(msg);
+      alert("đăng ký thất bại -- trùng email");
     } finally {
       setLoading(false);
     }
