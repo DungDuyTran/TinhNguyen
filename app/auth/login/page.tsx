@@ -1,39 +1,33 @@
 "use client";
 import { useState } from "react";
-import { request } from "@/lib/api/axiosPublic";
 import { useRouter } from "next/navigation";
-
+import { useAxios } from "@/lib/hooks/useAxios";
 export default function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
-
-  // Xử lý nhập liệu
+  const { fetchData, loading } = useAxios<{ message: string }>();
+  // Xử lý dữ liệu
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     if (error) setError("");
   };
 
-  // Gửi yêu cầu đăng nhập API
+  // Xử lý đăng nhập
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!formData.email || !formData.password) {
-      setError("⚠️ Vui lòng nhập đầy đủ thông tin");
+      setError(" Vui lòng nhập đầy đủ thông tin");
       return;
     }
 
-    setLoading(true);
     try {
-      const res = await request("POST", "/api/auth/login", formData);
-      alert(res.message || "Đăng nhập thành công");
+      const res = await fetchData("POST", "/api/auth/login", formData);
+      alert(res?.message || "Đăng nhập thành công");
       router.push("/giaodien");
-    } catch (err: any) {
-      console.error("Login error:", err);
-      setError(err.response?.data?.error || "❌ Sai email hoặc mật khẩu");
-    } finally {
-      setLoading(false);
+    } catch {
+      setError("Sai email hoặc mật khẩu");
     }
   };
 
@@ -41,7 +35,7 @@ export default function LoginPage() {
     <div className="relative w-full h-screen overflow-hidden bg-white">
       {/* Ảnh nền */}
       <img
-        src="/dangKy.jpg"
+        src="/anh1.jpg"
         alt="background"
         className="absolute inset-0 w-full h-full object-cover"
       />

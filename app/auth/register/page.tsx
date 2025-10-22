@@ -43,7 +43,7 @@ export default function SignupPage() {
     <div className="relative w-full h-screen overflow-hidden bg-white">
       {/* Ảnh nền */}
       <img
-        src="/dangky.jpg"
+        src="/anh1.jpg"
         alt="background"
         className="absolute inset-0 w-full h-full object-cover opacity-90"
       />

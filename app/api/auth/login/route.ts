@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
     if (!isMath) {
       return NextResponse.json({ error: "sai mật khẩu" }, { status: 401 });
     }
+
     // tạo token
     const accessToKen = jwtService.signAccessToken({ userId: user.id });
     const refeshToKen = jwtService.signRefreshToken({ userId: user.id });
