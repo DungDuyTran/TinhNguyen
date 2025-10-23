@@ -1,32 +1,35 @@
-import axios, { AxiosRequestConfig } from "axios";
-import { config } from "../middleware";
+"use client";
 
-const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+import { useState, useCallback } from "react";
+import { request } from "./api/axiosPublic";
+import { error } from "console";
 
-export async function fetcher<T = any>(
-  url: string,
-  config?: AxiosRequestConfig
-): Promise<T> {
-  const response = await api.get<T>(url, config);
-  return response.data;
-}
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
-export async function request<T = any>(
-  method: "GET" | "POST" | "PUT" | "DELETE",
-  url: string,
-  data?: any,
-  config?: AxiosRequestConfig
-): Promise<T> {
-  const response = await api.request<T>({
-    method,
-    url,
-    data,
-    ...config,
-  });
-  return response.data;
+export function useAxios<T = any>() {
+  const [data, setData] = useState<T | null>(null);
+  const [error, setError] = useState<T | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const fetchData = useCallback(
+    async (method: HttpMethod, url: string, body?: string) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await request<T>(method, url, body);
+        setData(result);
+        return result;
+      } catch (err: any) {
+        const message =
+          err.response?.data?.message ||
+          err.reponse?.data?.error ||
+          "Đã có lỗi";
+        setError(message);
+      } finally {
+        setLoading(true);
+      }
+    },
+    []
+  );
+  return { data, error, loading, fetchData };
 }
