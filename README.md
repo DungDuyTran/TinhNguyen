@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🤝 HỆ THỐNG HOẠT ĐỘNG TÌNH NGUYỆN
 
-## Getting Started
+Đồ án cá nhân – xây dựng hệ thống quản lý và tổ chức hoạt động tình nguyện bằng **Next.js + TypeScript**, triển khai theo **kiến trúc 3 lớp (Controller – Service – Repository)**.
 
-First, run the development server:
+---
+
+## 🚀 Tính Năng Chính
+
+- Phát triển dự án theo **kiến trúc 3 lớp** (Controller – Service – Repository) bằng TypeScript.
+- Sử dụng **Axios** để xử lý request – response và **Custom Hook** để tái sử dụng logic trong frontend.
+- Tích hợp **JWT Authentication** để xác thực và phân quyền người dùng.
+- Tổ chức mã nguồn gọn gàng, dễ mở rộng và bảo trì.
+
+---
+
+## 🛠 Công Nghệ Sử Dụng
+
+| Công Nghệ          | Mục Đích                           |
+| ------------------ | ---------------------------------- |
+| **Next.js 15**     | Framework chính                    |
+| **TypeScript**     | Giúp code rõ ràng, tránh lỗi       |
+| **React 19**       | Xây dựng giao diện người dùng      |
+| **Tailwind CSS 4** | Thiết kế nhanh, tiện lợi           |
+| **Prisma ORM**     | Tương tác cơ sở dữ liệu MySQL      |
+| **MySQL**          | Cơ sở dữ liệu chính                |
+| **Axios**          | Gọi API và quản lý request dễ dàng |
+| **SWR**            | Cache và quản lý dữ liệu hiệu quả  |
+| **Zod**            | Kiểm tra dữ liệu đầu vào           |
+| **bcryptjs**       | Mã hoá mật khẩu                    |
+| **jsonwebtoken**   | Xác thực và phân quyền JWT         |
+| **js-cookie**      | Quản lý token phía client          |
+
+---
+
+## ⚙️ Cách Chạy Project
 
 ```bash
+git clone https://github.com/<tên-tài-khoản>/<tên-dự-án>
+cd <tên-dự-án>
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
