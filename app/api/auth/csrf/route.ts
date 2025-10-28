@@ -15,6 +15,7 @@ export async function GET() {
   cookieStore.set("csrf_token", token, {
     httpOnly: true, // tránh XSS
     secure: process.env.NODE_ENV === "production",
+    // secure: true,
     sameSite: "strict", // chống CSRF từ domain khác
     path: "/",
   });

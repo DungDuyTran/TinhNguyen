@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { authMiddleware } from "./lib/middlewares/auth.middleware";
-
+export const runtime = "nodejs";
 /**
  * Middleware trung tâm:
  * - Bảo vệ toàn bộ API (trừ các route công khai)

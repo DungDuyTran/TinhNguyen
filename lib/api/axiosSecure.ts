@@ -35,7 +35,7 @@ apiSecure.interceptors.request.use(async (config) => {
     }
 
     if (csrfToken) {
-      config.headers["X-CSRF-Token"] = csrfToken;
+      config.headers["x-csrf-token"] = csrfToken;
     }
   }
 

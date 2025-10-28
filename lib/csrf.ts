@@ -18,6 +18,7 @@ export async function setCsrfCookie() {
   const cookieStore = await cookies(); // cần await
   cookieStore.set("csrf_token", token, {
     httpOnly: false,
+    // false vì cần client đọc đưuọc để gửi lên header
     sameSite: "strict",
     secure: process.env.NODE_ENV === "production",
     path: "/",

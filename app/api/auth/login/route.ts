@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
       httpOnly: true,
       secure: true,
       sameSite: "strict",
-      maxAge: 60 * 7,
+      maxAge: 60 * 60,
       path: "/",
     });
     res.cookies.set("refresh_token", refeshToKen, {
