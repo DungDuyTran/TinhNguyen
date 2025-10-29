@@ -19,6 +19,7 @@ export async function authMiddleware(req: NextRequest) {
   const token = headerToken?.startsWith("Bearer ")
     ? headerToken.replace("Bearer ", "")
     : cookieToken;
+  console.log("token: " + token);
 
   if (!token) {
     console.log(" không có JWT token — cần đăng nhập lại.");
