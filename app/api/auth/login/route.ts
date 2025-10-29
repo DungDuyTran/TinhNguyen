@@ -2,6 +2,10 @@ import { userRepository } from "@/lib/api/repositories/user.repository";
 import { jwtService } from "@/lib/api/services/jwt.service";
 import { setCsrfCookie } from "@/lib/csrf";
 import { NextRequest, NextResponse } from "next/server";
+// {
+//   "email": "maitiendung@gmail.com",
+//   "password": "Dung3072004"
+// }
 
 // kiểm tra email/p cấp access_Token và refresh_token
 export async function POST(req: NextRequest) {
@@ -18,33 +22,56 @@ export async function POST(req: NextRequest) {
     if (!isMath) {
       return NextResponse.json({ error: "sai mật khẩu" }, { status: 401 });
     }
-
     // tạo token
     const accessToKen = jwtService.signAccessToken({ userId: user.id });
     const refeshToKen = jwtService.signRefreshToken({ userId: user.id });
-
     const csrfToken = await setCsrfCookie();
     // tạo response
     const res = NextResponse.json({
       message: "Đăng nhập thành công",
       csrfToken,
+      user: {
+        id: user.id,
+        email: user.email,
+        hoTen: user.hoTen,
+        vaiTro: user.vaiTro,
+      },
     });
-    // tạo CSRF token & cookie
-    // lưu cookie HTTPOnly (chống xss)
+
+    const isLocalhost = process.env.NODE_ENV !== "production";
     res.cookies.set("access_token", accessToKen, {
       httpOnly: true,
-      secure: true,
-      sameSite: "strict",
+      secure: !isLocalhost, // đừng ép secure ở localhost
+      sameSite: "lax", // lax cho phép cookie gửi lại an toàn
       maxAge: 60 * 60,
       path: "/",
     });
+
     res.cookies.set("refresh_token", refeshToKen, {
       httpOnly: true,
-      secure: true,
-      sameSite: "strict",
+      secure: !isLocalhost,
+      sameSite: "lax",
       maxAge: 60 * 60 * 24 * 7,
       path: "/",
     });
+
+    // tạo CSRF token & cookie
+    // lưu cookie HTTPOnly (chống xss)
+    // res.cookies.set("access_token", accessToKen, {
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: "strict",
+    //   maxAge: 60 * 60,
+    //   path: "/",
+    // });
+    // res.cookies.set("refresh_token", refeshToKen, {
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: "strict",
+    //   maxAge: 60 * 60 * 24 * 7,
+    //   path: "/",
+    // });
+
     // httpOnly: true --> js không thế đọc cookie -> chống xss
     // secure : true --> cgir gửi cookie qua https
     // samesite: "strict" -> chống CSRF

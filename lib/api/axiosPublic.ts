@@ -1,20 +1,52 @@
-import axios from "axios";
-import { AxiosRequestConfig } from "axios";
-
-// fetcher<T> → dùng với SWR (chỉ GET).
-// request<T> → dùng cho mọi method (GET, POST, PUT, DELETE).
+import axios, { AxiosRequestConfig } from "axios";
+import Cookies from "js-cookie";
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || " ",
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000",
   headers: {
     "Content-Type": "application/json",
   },
   withCredentials: true,
 });
 
-// fetcher generic: dùng cho SWR
-// luôn get dữ liệu
-// <T = any> để tự động gợi ý kiểu dữ liệu trả về
+api.interceptors.request.use((config) => {
+  const csrfToken = Cookies.get("csrf_token");
+  if (csrfToken) {
+    config.headers["x-csrf-token"] = csrfToken;
+  }
+  return config;
+});
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (
+      error.response?.status === 403 &&
+      !originalRequest._retry &&
+      error.response?.data?.error?.includes("Token")
+    ) {
+      originalRequest._retry = true;
+
+      try {
+        console.log("Access token hết hạn — đang gọi /api/auth/refresh...");
+        await axios.post("/api/auth/refresh", {}, { withCredentials: true });
+        console.log("Refresh token thành công — thử lại request ban đầu");
+        return api(originalRequest);
+      } catch (refreshError) {
+        console.error("Refresh token thất bại — đăng xuất người dùng");
+        if (typeof window !== "undefined") {
+          window.location.href = "/auth/login";
+        }
+        return Promise.reject(refreshError);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
 export async function fetcher<T = any>(
   url: string,
   config?: AxiosRequestConfig
@@ -22,9 +54,7 @@ export async function fetcher<T = any>(
   const response = await api.get<T>(url, config);
   return response.data;
 }
-// hàm resquest generic dùng cho mọi phương thức
-// có thể truyền dữ liệu body + config
-// <T = any> để type an toàn khi gọi
+
 export async function request<T = any>(
   method: "GET" | "POST" | "PUT" | "DELETE",
   url: string,
@@ -39,8 +69,5 @@ export async function request<T = any>(
   });
   return response.data;
 }
-// Promise<T> = một gói dữ liệu sẽ có trong tương lai, kiểu của dữu liệu T
-// Dùng await hoặc .then() đêt lấy giá trị thuwck từ promise
 
-// export axios instance nếu muốn gọi trực tiếp
 export default api;
