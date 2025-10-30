@@ -1,5 +1,5 @@
 // lớp giao tiếp với db
-// Tạo findByEmail -- createUsser() có hash mật khẩu -- verifiPw
+// Tạo findByEmail -- createUsser() có hash mật khẩu -- verifyPw
 
 import { prisma } from "@/lib/prisma";
 import { Prisma, VaiTro } from "@prisma/client";
@@ -18,7 +18,7 @@ export const userRepository = {
     vaiTro?: VaiTro;
   }) {
     // hash mật khẩu
-    // lưu mật khẩu dưới dang chuẩn hóa không lưu gốc
+    // lưu mật khẩu dưới dang chuẩn hóa không lưu gốc đảm bảo an toàn
     const hashed = await bcrypt.hash(data.password, 10);
     // tạo object theo đúng prisma
     const userData: Prisma.UserCreateInput = {

@@ -37,7 +37,8 @@ export async function POST(req: NextRequest) {
         vaiTro: user.vaiTro,
       },
     });
-
+    // tạo CSRF token & cookie
+    // lưu cookie HTTPOnly (chống xss)
     const isLocalhost = process.env.NODE_ENV !== "production";
     res.cookies.set("access_token", accessToKen, {
       httpOnly: true,

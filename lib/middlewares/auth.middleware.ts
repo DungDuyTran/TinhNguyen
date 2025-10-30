@@ -4,14 +4,14 @@ import { verifyCsrfToken } from "../csrf";
 
 const SECRET = process.env.JWT_SECRET!;
 
-/**
+/*
  * Middleware xác thực người dùng qua JWT & CSRF token
  * - Kiểm tra access_token từ cookie hoặc header
- * - Verify chữ ký và hạn sử dụng của JWT
+ * - Verify signature và hạn sử dụng của JWT
  * - Xác minh CSRF token nếu là request ghi
  */
 export async function authMiddleware(req: NextRequest) {
-  console.log("Bắt đầu xác thực...");
+  console.log("- Bắt đầu xác thực...");
 
   // --- 1. Lấy JWT token ---
   const headerToken = req.headers.get("authorization");
@@ -19,7 +19,7 @@ export async function authMiddleware(req: NextRequest) {
   const token = headerToken?.startsWith("Bearer ")
     ? headerToken.replace("Bearer ", "")
     : cookieToken;
-  console.log("token: " + token);
+  console.log("- token: " + token);
 
   if (!token) {
     console.log(" không có JWT token — cần đăng nhập lại.");
@@ -33,10 +33,10 @@ export async function authMiddleware(req: NextRequest) {
   try {
     const decoded = jwt.verify(token, SECRET) as any;
 
-    console.log(" Token hợp lệ!");
-    console.log(" Payload:", decoded);
-    console.log(" iat:", new Date(decoded.iat * 1000).toLocaleString());
-    console.log(" exp:", new Date(decoded.exp * 1000).toLocaleString());
+    console.log("- Token hợp lệ!");
+    console.log("     - > Payload:", decoded);
+    console.log("     - > iat:", new Date(decoded.iat * 1000).toLocaleString());
+    console.log("     - > exp:", new Date(decoded.exp * 1000).toLocaleString());
 
     // Gắn userId vào request (có thể dùng trong API route)
     (req as any).user = decoded;
@@ -57,13 +57,13 @@ export async function authMiddleware(req: NextRequest) {
   // 3️. Xác minh CSRF token nếu là phương thức ghi
   const method = req.method.toUpperCase();
   if (["POST", "PUT", "PATCH", "DELETE"].includes(method)) {
-    console.log("Kiểm tra CSRF token...");
+    console.log("- Kiểm tra CSRF token...");
 
     const csrfHeader = req.headers.get("x-csrf-token");
     const csrfCookie = req.cookies.get("csrf_token")?.value;
 
-    console.log("   - > CSRF header:", csrfHeader);
-    console.log("   - > CSRF cookie:", csrfCookie);
+    console.log("     - > CSRF header:", csrfHeader);
+    console.log("     - > CSRF cookie:", csrfCookie);
 
     if (!csrfHeader || !csrfCookie) {
       console.warn(" Thiếu CSRF token trong header hoặc cookie.");
@@ -80,17 +80,17 @@ export async function authMiddleware(req: NextRequest) {
 
     const isValid = await verifyCsrfToken(csrfHeader);
     if (!isValid) {
-      console.warn(" CSRF token không hợp lệ hoặc đã hết hạn.");
+      console.warn("- CSRF token không hợp lệ hoặc đã hết hạn.");
       return NextResponse.json(
         { error: "CSRF token không hợp lệ hoặc hết hạn." },
         { status: 403 }
       );
     }
 
-    console.log(" CSRF token hợp lệ.");
+    console.log("- CSRF token hợp lệ.");
   }
 
   // --- 4️. Cho phép request đi tiếp ---
-  console.log(" Xác thực thành công → Cho phép request đi tiếp.");
+  console.log("- Xác thực thành công ---- Cho phép request đi tiếp.");
   return NextResponse.next();
 }
