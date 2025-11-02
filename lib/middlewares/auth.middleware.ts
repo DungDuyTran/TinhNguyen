@@ -1,21 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { verifyCsrfToken } from "../csrf";
-
+import { VaiTro } from "@prisma/client";
+import { error } from "console";
+// khi nào thì sử dụng
+// khi ngta đưa thiết kế thì làm sao tôi biết đc lưu cái gì vào zustand
+// nguyên lý
 const SECRET = process.env.JWT_SECRET!;
 
 /*
- * Middleware xác thực người dùng qua JWT & CSRF token
+ * Middleware xác thực người dùng qua JWT & CSRF token + RBAC
  * - Kiểm tra access_token từ cookie hoặc header
  * - Verify signature và hạn sử dụng của JWT
  * - Xác minh CSRF token nếu là request ghi
+ * - allowedRoles : danh sách vai trò được phép truy cập
  */
-export async function authMiddleware(req: NextRequest) {
+export async function authMiddleware(
+  req: NextRequest,
+  allowedRoles?: string[]
+) {
   console.log("- Bắt đầu xác thực...");
 
   // --- 1. Lấy JWT token ---
   const headerToken = req.headers.get("authorization");
   const cookieToken = req.cookies.get("access_token")?.value;
+
   const token = headerToken?.startsWith("Bearer ")
     ? headerToken.replace("Bearer ", "")
     : cookieToken;
@@ -23,6 +32,7 @@ export async function authMiddleware(req: NextRequest) {
 
   if (!token) {
     console.log(" không có JWT token — cần đăng nhập lại.");
+
     return NextResponse.json(
       { error: "Thiếu token hoặc chưa đăng nhập." },
       { status: 401 }
@@ -30,9 +40,8 @@ export async function authMiddleware(req: NextRequest) {
   }
 
   // --- 2️. Xác thực JWT ---
+  const decoded = jwt.verify(token, SECRET) as any;
   try {
-    const decoded = jwt.verify(token, SECRET) as any;
-
     console.log("- Token hợp lệ!");
     console.log("     - > Payload:", decoded);
     console.log("     - > iat:", new Date(decoded.iat * 1000).toLocaleString());
@@ -51,7 +60,39 @@ export async function authMiddleware(req: NextRequest) {
     }
 
     console.error("Lỗi xác thực JWT khác:", error.message);
-    return NextResponse.json({ error: "Lỗi xác thực JWT." }, { status: 403 });
+
+    const loginUrl = new URL("/login", req.url);
+    return NextResponse.redirect(loginUrl);
+  }
+  const role = decoded.vaiTro;
+  console.log("vai trò của người dùng: ", role);
+
+  // RBAC : kiểm tra vai trò
+  const pathname = req.nextUrl.pathname;
+
+  // Áp dụng quy tắc RBAC cho frontend giao diện
+  if (pathname.startsWith("/giaodien/admin") && role !== "Admin") {
+    console.log(`Người dùng (${role}) cố truy cập Admin`);
+    const forbidden = new URL("/giaodien/403", req.url);
+    return NextResponse.redirect(forbidden);
+  }
+
+  if (
+    pathname.startsWith("/giaodien/tochuc") &&
+    !["Admin", "ToChuc"].includes(role)
+  ) {
+    console.log(`Người dùng (${role}) cố truy cập Tổ Chức`);
+    const forbidden = new URL("/giaodien/403", req.url);
+    return NextResponse.redirect(forbidden);
+  }
+
+  if (
+    pathname.startsWith("/giaodien/tinhnguyenvien") &&
+    !["Admin", "TinhNguyenVien"].includes(role)
+  ) {
+    console.log(`Người dùng (${role}) cố truy cập Tình Nguyện Viên`);
+    const forbidden = new URL("/giaodien/403", req.url);
+    return NextResponse.redirect(forbidden);
   }
 
   // 3️. Xác minh CSRF token nếu là phương thức ghi
@@ -87,7 +128,7 @@ export async function authMiddleware(req: NextRequest) {
       );
     }
 
-    console.log("- CSRF token hợp lệ.");
+    console.log("- CSRF token hợp lệ --- xác thực hợp lệ ");
   }
 
   // --- 4️. Cho phép request đi tiếp ---

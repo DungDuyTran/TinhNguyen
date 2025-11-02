@@ -16,6 +16,7 @@ export async function middleware(req: NextRequest) {
     "/api/auth/register",
     "/api/auth/csrf",
     "/api/auth/refresh",
+    "/login",
   ];
 
   // Nếu là route công khai → bỏ qua middleware
@@ -23,8 +24,17 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // ngược lại - > yêu cầu xác thực JWT + CSRF
+  console.log(`middleware đăng kiểm tra xác thực cho: ${pathname}`);
+  const res = await authMiddleware(req);
+
+  // nếu middleware con trả về lỗi
+  if (res instanceof NextResponse && res.status !== 200) {
+    console.log(`request bị chặn ở middleware: ${pathname}`);
+    return res;
+  }
   // Còn lại: yêu cầu xác thực và CSRF
-  return authMiddleware(req);
+  return NextResponse.next();
 }
 
 /**
@@ -32,5 +42,5 @@ export async function middleware(req: NextRequest) {
  *  → Áp dụng cho tất cả các API routes (/api/**)
  */
 export const config = {
-  matcher: ["/api/:path*"],
+  matcher: ["/api/:path*", "/giaodien/:path*"],
 };

@@ -1,6 +1,7 @@
 import { userRepository } from "@/lib/api/repositories/user.repository";
 import { jwtService } from "@/lib/api/services/jwt.service";
 import { setCsrfCookie } from "@/lib/csrf";
+import { VaiTro } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 // {
 //   "email": "maitiendung@gmail.com",
@@ -23,7 +24,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "sai mật khẩu" }, { status: 401 });
     }
     // tạo token
-    const accessToKen = jwtService.signAccessToken({ userId: user.id });
+    const accessToKen = jwtService.signAccessToken({
+      userId: user.id,
+      email: user.email,
+      vaiTro: user.vaiTro,
+    });
     const refeshToKen = jwtService.signRefreshToken({ userId: user.id });
     const csrfToken = await setCsrfCookie();
     // tạo response
@@ -36,6 +41,7 @@ export async function POST(req: NextRequest) {
         hoTen: user.hoTen,
         vaiTro: user.vaiTro,
       },
+      vaiTro: user.vaiTro, //////
     });
     // tạo CSRF token & cookie
     // lưu cookie HTTPOnly (chống xss)

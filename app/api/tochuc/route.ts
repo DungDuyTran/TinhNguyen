@@ -1,14 +1,12 @@
-import { CrudHandler } from "@/lib/crudHandler";
-import { prisma } from "@/lib/prisma";
-import { NextRequest } from "next/server";
-import z from "zod";
-// redis
+import { authMiddleware } from "@/lib/middlewares/auth.middleware";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
-  return handler.getAll({ User: true });
-}
+export async function GET(req: NextRequest) {
+  const auth = authMiddleware(req, ["ToChuc", "Admin"]);
+  if (auth instanceof NextResponse) return auth;
 
-export async function POST(req: NextRequest) {
-  const data = await req.json();
-  return handler.post(data);
+  return NextResponse.json(
+    { message: "Tổ chức được phép tạo sự kiện" },
+    { status: 200 }
+  );
 }
