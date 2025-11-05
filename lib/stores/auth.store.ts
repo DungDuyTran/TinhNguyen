@@ -3,15 +3,15 @@
 import { create } from "zustand";
 
 interface AuthState {
-  // state cho login
+  // state login
   formData: { email: string; password: string };
   error: string;
   loading: boolean;
 
-  // state cho register
+  // state register
   registerData: { hoTen: string; email: string; password: string };
 
-  // hàm xử lý login
+  // hàm xử lý cho login
   setFormData: (data: Partial<{ email: string; password: string }>) => void;
   setError: (error: string) => void;
   setLoading: (loading: boolean) => void;
@@ -21,14 +21,12 @@ interface AuthState {
     data: Partial<{ hoTen: string; email: string; password: string }>
   ) => void;
 }
-
-// ✅ Tạo store Zustand
+// tạo store zustand
 export const useAuthStore = create<AuthState>((set) => ({
   formData: { email: "", password: "" },
   error: "",
   loading: false,
   registerData: { hoTen: "", email: "", password: "" },
-
   setFormData: (data) =>
     set((state) => ({ formData: { ...state.formData, ...data } })),
   setError: (error) => set({ error }),
