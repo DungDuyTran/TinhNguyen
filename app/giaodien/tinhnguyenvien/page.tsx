@@ -1,11 +1,25 @@
-import React from "react";
+"use client";
 
-const page = () => {
+import React from "react";
+import { useRouter } from "next/navigation";
+
+const Page = () => {
+  const router = useRouter();
+
+  const handleHome = () => {
+    router.push("/giaodien/home");
+  };
+
   return (
-    <div className="text-3xl flex justify-center items-center mt-8">
-      Tinh nguyện viên
+    <div className="flex justify-center items-center h-screen bg-gray-50">
+      <button
+        onClick={handleHome}
+        className="px-6 py-3 text-lg font-semibold bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-all"
+      >
+        Đi đến giao diện Home
+      </button>
     </div>
   );
 };
 
-export default page;
+export default Page;

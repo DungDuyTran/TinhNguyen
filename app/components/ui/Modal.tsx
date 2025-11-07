@@ -1,0 +1,23 @@
+"use client";
+import { useUIStore } from "@/lib/stores/ui.store";
+
+export function Modal() {
+  const isModalOpen = useUIStore((state) => state.isModalOpen);
+  const closeModal = useUIStore((state) => state.closeModal);
+
+  if (!isModalOpen) return null;
+
+  return (
+    <div className="fixed inset-0 flex justify-center items-center bg-white">
+      <div className="bg-white p-6 rounded shadow-lg">
+        <p className="mb-4 text-gray-800">Modal đang mở!</p>
+        <button
+          onClick={closeModal}
+          className="bg-amber-600 text-white px-4 py-2 rounded"
+        >
+          Đóng
+        </button>
+      </div>
+    </div>
+  );
+}
