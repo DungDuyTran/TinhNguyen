@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
         hoTen: user.hoTen,
         vaiTro: user.vaiTro,
       },
-      vaiTro: user.vaiTro, //////
+      vaiTro: user.vaiTro,
     });
     // tạo CSRF token & cookie
     // lưu cookie HTTPOnly (chống xss)

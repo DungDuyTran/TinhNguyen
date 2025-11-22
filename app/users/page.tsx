@@ -12,7 +12,7 @@ type User = {
 
 export default function SearchUser() {
   const [query, setQuery] = useState("");
-  const [users, setUsers] = useState<User[]>([]); // ✅ luôn mảng rỗng
+  const [users, setUsers] = useState<User[]>([]); // luôn mảng rỗng
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const debounceQuery = useDebounce(query, 600);
@@ -40,7 +40,7 @@ export default function SearchUser() {
         setUsers(result);
       } catch (error: any) {
         setError(error.response?.data?.message || "Lỗi khi tải dữ liệu");
-        setUsers([]); // ✅ fallback tránh undefined
+        setUsers([]); //  fallback tránh undefined
       } finally {
         setLoading(false);
       }
