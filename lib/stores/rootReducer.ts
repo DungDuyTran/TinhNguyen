@@ -3,18 +3,19 @@
 
 import { combineReducers } from "redux";
 import { themeReducer } from "./theme/theme.reducer";
+import { ThemeActionTypes } from "./theme/theme.types";
 
 // vidu thêm
 // Import các reducer khác nếu có (ví dụ: uiReducer, userReducer)
-// import { uiReducer } from './ui.store';
+// import { uiReducer } from './ui.store';.
 
 const rootReducer = combineReducers({
   theme: themeReducer,
   // ui: uiReducer,
   // auth: authReducer
 });
-
-// định nghĩa dữ liệu của root state đẻ sử dụng trong useSelector
 export type RootState = ReturnType<typeof rootReducer>;
-
+// Export tất cả các actions mà RootReducer có thể xử lý
+export type RootAction = ThemeActionTypes; // Thay thế bằng ThemeActionTypes nếu chỉ có Theme
+// export type RootAction = ThemeActionTypes | OtherActionTypes;
 export default rootReducer;

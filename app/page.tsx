@@ -1,9 +1,15 @@
-import Image from "next/image";
+// app/page.tsx
+import React from "react";
 
-export default function Home() {
+import ThemeWrapper from "@/app/components/ThemeWrapper";
+import { ThemeToggle } from "./components/ThemeToggler";
+
+export default function HomePage() {
   return (
-    <div className=" bg-white text-black font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <h1>Tình nguyện điiiiiiiiii</h1>
-    </div>
+    <ThemeWrapper>
+      <div className="container mx-auto p-8 flex justify-center items-center text-5xl ">
+        hellooooooooo !
+      </div>
+    </ThemeWrapper>
   );
 }
