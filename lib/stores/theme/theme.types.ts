@@ -14,7 +14,7 @@ export interface ToggleThemeAction {
 // Kiểu dữ liệu cho action SET_THEME_INITIAL
 export interface SetThemeInitialAction {
   type: typeof SET_THEME_INITIAL;
-  payload: boolean; // Giá trị isDarkMode mới
+  payload: boolean; // Giá trị isDarkMode mới.
 }
 
 // kiểu dữu liệu tổng hợp cho tất cả các action và theme

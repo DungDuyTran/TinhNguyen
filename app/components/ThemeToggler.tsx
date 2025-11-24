@@ -1,4 +1,4 @@
-// app/components/ThemeToggle.tsx
+// app/components/ThemeToggle.tsx.
 "use client";
 
 import { RootState } from "@/lib/stores/rootReducer";

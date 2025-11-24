@@ -1,4 +1,4 @@
-// tạo hàm để khởi tạo Action
+// tạo hàm để khởi tạo Action.
 
 import {
   SET_THEME_INITIAL,

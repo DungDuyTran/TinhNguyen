@@ -1,4 +1,4 @@
-// app/components/ThemeWrapper.tsx
+// app/components/ThemeWrapper.tsx.
 "use client";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -19,7 +19,7 @@ export default function ThemeWrapper({
   const [isLoaded, setIsLoaded] = useState(false); // Bắt đầu là FALSE
 
   useEffect(() => {
-    // Logic này chỉ chạy một lần SAU khi component được gắn kết (mounted)
+    // Logic này chỉ chạy một lần SAU khi component được gắn kết (mounted).
     const savedState = loadThemeFromLocalStorage();
 
     if (savedState !== undefined) {

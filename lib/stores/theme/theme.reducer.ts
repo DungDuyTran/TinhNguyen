@@ -36,7 +36,7 @@ export const loadThemeFromLocalStorage = (): ThemeState | undefined => {
 
 // 3. Reducer Function: (state, action) => newState
 export function themeReducer(
-  state = initialState, // 👈 Luôn dùng trạng thái mặc định tĩnh
+  state = initialState, // Luôn dùng trạng thái mặc định tĩnh
   action: ThemeActionTypes
 ): ThemeState {
   switch (action.type) {
@@ -47,8 +47,8 @@ export function themeReducer(
         isDarkMode: !state.isDarkMode,
       };
 
-    case SET_THEME_INITIAL: // 👈 Xử lý Action SET mới
-      // Sử dụng payload để đặt trạng thái đã lưu
+    case SET_THEME_INITIAL: //Xử lý Action SET mới
+      // Sử dụng payload để đặt trạng thái đã lưu.
       return {
         ...state,
         isDarkMode: (action as SetThemeInitialAction).payload,

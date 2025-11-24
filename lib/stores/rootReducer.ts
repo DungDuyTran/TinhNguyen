@@ -15,7 +15,7 @@ const rootReducer = combineReducers({
   // auth: authReducer
 });
 export type RootState = ReturnType<typeof rootReducer>;
-// Export tất cả các actions mà RootReducer có thể xử lý
+// Export tất cả các actions mà RootReducer có thể xử lý.
 export type RootAction = ThemeActionTypes; // Thay thế bằng ThemeActionTypes nếu chỉ có Theme
 // export type RootAction = ThemeActionTypes | OtherActionTypes;
 export default rootReducer;

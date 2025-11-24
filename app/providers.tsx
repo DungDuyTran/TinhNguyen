@@ -1,9 +1,8 @@
-// app/providers.tsx
 "use client";
 
 import { Provider } from "react-redux";
 import { store } from "@/lib/stores/store";
-import ThemeWrapper from "./components/ThemeWrapper"; // Import ThemeWrapper
+import ThemeWrapper from "./components/ThemeWrapper";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (

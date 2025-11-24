@@ -50,7 +50,7 @@ export default function SearchUser() {
   }, [debounceQuery]);
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-4 border rounded-xl shadow">
+    <div className="max-w-md mx-auto p-4 border rounded-xl shadow">
       <h2 className="text-xl font-semibold mb-3">
         🔍 Tìm kiếm người dùng (Axios + Debounce)
       </h2>
