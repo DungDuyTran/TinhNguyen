@@ -7,6 +7,7 @@ export interface ThemeState {
 // định nghĩa hằng số ( constants ) cho Action types.
 export const TOGGLE_THEME = "theme/toggleTheme";
 export const SET_THEME_INITIAL = "theme/setInitial";
+
 // kiểu dữ liệu cho action
 export interface ToggleThemeAction {
   type: typeof TOGGLE_THEME;

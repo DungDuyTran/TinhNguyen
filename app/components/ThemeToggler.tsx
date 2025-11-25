@@ -16,7 +16,7 @@ export function ThemeToggle() {
     dispatch(toggleTheme());
   };
 
-  // Xác định classes cho component này (chỉ để minh họa)
+  // Xác định classes cho component này
   const buttonClasses = isDarkMode
     ? "bg-indigo-600 hover:bg-indigo-700 text-white"
     : "bg-gray-200 hover:bg-gray-300 text-gray-800";
