@@ -6,16 +6,12 @@ import { themeReducer } from "./theme/theme.reducer";
 import { ThemeActionTypes } from "./theme/theme.types";
 import { counterReducer } from "./counter/counter.reducer";
 import { CountActionTypes } from "./counter/counter.type";
-
-// vidu thêm
-// Import các reducer khác nếu có (ví dụ: uiReducer, userReducer)
-// import { uiReducer } from './ui.store';.
+import counterSlice from "./counterRTK/counterSlice";
 
 const rootReducer = combineReducers({
   theme: themeReducer,
   counter: counterReducer,
-  // ui: uiReducer,
-  // auth: authReducer
+  counterSlice: counterSlice,
 });
 export type RootState = ReturnType<typeof rootReducer>;
 // Export tất cả các actions mà RootReducer có thể xử lý.

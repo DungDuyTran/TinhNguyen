@@ -3,6 +3,8 @@
 import { Provider } from "react-redux";
 import { store } from "@/lib/stores/store";
 import ThemeWrapper from "./components/ThemeWrapper";
+import { storeRDTK } from "@/lib/stores/storeRTK";
+import { Store } from "redux";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (

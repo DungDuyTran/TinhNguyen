@@ -1,6 +1,7 @@
 "use client";
 
 import { Counter } from "@/app/components/Counter";
+import { CounterRTK } from "@/app/components/CounterRTK";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -36,6 +37,7 @@ const Page = () => {
 
       {/* Counter nằm phía dưới */}
       <Counter />
+      <CounterRTK />
     </div>
   );
 };
