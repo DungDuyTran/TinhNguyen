@@ -8,3 +8,4 @@ export const storeRDTK = configureStore({
 // định nghãi types cho toàn ứng dụng
 export type RootState = ReturnType<typeof storeRDTK.getState>;
 export type AppDispatch = typeof storeRDTK.dispatch;
+//

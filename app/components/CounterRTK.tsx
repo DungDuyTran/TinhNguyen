@@ -9,7 +9,7 @@ export function CounterRTK() {
     (state: RootState) => state.counterSlice.value
   );
   const dispatch = useAppDispatch();
-
+  //
   return (
     <div className="bg-red-500 shadow-lg rounded-xl p-5 w-[200px] ml-3 text-white">
       <h1 className="text-center font-semibold mb-4 text-xl text-yellow-300 ">
@@ -22,7 +22,7 @@ export function CounterRTK() {
       <div className="flex items-center justify-center gap-4">
         {/* Nút Giảm */}
         <button
-          onClick={() => dispatch(decrement(3))}
+          onClick={() => dispatch(decrement(5))}
           className="bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded-xl shadow"
           disabled={counterRTK <= 0}
         >
@@ -31,7 +31,7 @@ export function CounterRTK() {
 
         {/* Nút Tăng */}
         <button
-          onClick={() => dispatch(increment(1))}
+          onClick={() => dispatch(increment(5))}
           className="bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded-xl shadow"
         >
           Tăng
